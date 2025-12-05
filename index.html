@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Santhoshi — Data Science & AI Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fff0ec; /* pastel pink background */
+      --accent:#eaa6a1; /* lighter pink */
+      --deep:#1b1b1b; /* black */
+      --muted:#6b4b4b; /* brownish muted */
+      --card:#fff; 
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    body{font-family:'Poppins',system-ui,Segoe UI,Helvetica,Arial; margin:0; background:linear-gradient(120deg,var(--bg),#ffece6); color:var(--deep);}
+    header{display:flex;align-items:center;justify-content:space-between;padding:22px 40px;background:transparent;position:fixed;left:0;right:0;top:0;z-index:30}
+    .brand{display:flex;gap:18px;align-items:center}
+    .logo{width:46px;height:46px;border-radius:10px;background:var(--deep);display:flex;align-items:center;justify-content:center;color:white;font-weight:800}
+
+    /* social chips */
+    .enhanced-socials a{padding:6px 18px;font-size:13px;border-radius:30px;border:2px solid var(--deep);background:transparent;color:var(--deep);font-weight:600;transition:0.25s;text-decoration:none;display:inline-block}
+    .enhanced-socials a:hover{background:var(--deep);color:white;transform:translateY(-3px);border-color:var(--deep)}
+
+    nav .socials{display:flex;gap:12px;font-size:14px;color:var(--muted);align-items:center}
+    .actions{display:flex;gap:12px;align-items:center}
+    .btn{background:var(--deep);color:white;padding:10px 18px;border-radius:26px;border:none;cursor:pointer;font-weight:600}
+    .hamb{width:44px;height:44px;border-radius:50%;background:transparent;border:2px solid var(--deep);display:grid;place-items:center;cursor:pointer}
+
+    main{padding-top:110px}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:30px;align-items:center;max-width:1200px;margin:30px auto;padding:40px}
+    .intro small{color:var(--muted);display:block;margin-bottom:12px}
+    .title{font-size:64px;line-height:0.95;font-weight:800;color:#4b1b1b;margin:0}
+    .underline{display:inline-block;height:8px;width:160px;background:#ff7b7b;border-radius:6px;margin-top:12px}
+    .lead{color:var(--muted);max-width:620px;margin-top:20px;font-size:18px}
+    .hero .photo{justify-self:end}
+    .profile{width:420px;height:520px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));box-shadow:0 10px 30px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center}
+    .profile img{width:100%;height:100%;object-fit:cover}
+
+    /* slide panel for work/contact */
+    .panel{position:fixed;right:-420px;top:0;bottom:0;width:420px;background:linear-gradient(180deg,#fff,#fff8f6);box-shadow:-20px 0 40px rgba(0,0,0,0.12);transition:right .45s cubic-bezier(.2,.9,.2,1);z-index:80;padding:30px;overflow-y:auto}
+    .panel.open{right:0}
+    .panel h3{margin-top:6px}
+    .panel a{display:block;color:var(--deep);text-decoration:none;margin:8px 0}
+
+    /* Work section (slide to) */
+    .section{max-width:1100px;margin:30px auto;padding:60px 20px}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.06);transition:all .4s ease;opacity:0;transform:translateY(40px)}
+    .card.show{opacity:1;transform:translateY(0)}
+    .card:hover{transform:translateY(-10px) scale(1.03);box-shadow:0 16px 32px rgba(0,0,0,0.12)}
+    .card h4{margin:0 0 8px}
+    .card p{color:var(--muted);margin:0 0 12px}
+    .card .links{display:flex;gap:12px}
+    .like{margin-left:auto;border:1px solid var(--muted);padding:6px 10px;border-radius:8px;cursor:pointer}
+
+    /* Experience */
+    .timeline{display:flex;flex-direction:column;gap:14px}
+    .job{background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));padding:14px;border-radius:10px}
+    .job small{color:var(--muted)}
+
+    footer{padding:24px;text-align:center;color:var(--muted)}
+
+    /* responsive */
+    @media(max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .profile{width:300px;height:380px;justify-self:center}
+      .title{font-size:40px}
+      .panel{width:100%;right:-100%}
+      .grid{grid-template-columns:1fr}
+    }
+
+    /* slide-in animation */
+    .slide-in{opacity:0;transform:translateY(40px);transition:all .8s ease-out}
+    .slide-in.show{opacity:1;transform:translateY(0)}
+
+    /* small logo hover */
+    .logo{transition:transform .25s, background .25s}
+    .logo:hover{transform:scale(1.08) rotate(-3deg);background:var(--accent);color:var(--deep)}
+
+    /* certificate hover */
+    .cert-img{width:100%;border-radius:10px;display:block;box-shadow:0 8px 20px rgba(0,0,0,0.08);transition:transform .35s, box-shadow .35s}
+    .card:hover .cert-img{transform:translateY(-6px) scale(1.02);box-shadow:0 18px 40px rgba(0,0,0,0.12)}
+
+    /* subtle page transitions for next/previous navigation (CSS-only placeholders) */
+    .page-transition{position:fixed;left:0;right:0;top:0;bottom:0;pointer-events:none;transition:opacity .45s;opacity:0}
+    .page-transition.show{opacity:1}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" style="cursor:pointer">S</div>
+      <nav class="socials enhanced-socials">
+        <a href="https://github.com/santhoshi31" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/santhoshi-senthilkumar3120022022" target="_blank">LinkedIn</a>
+        <a href="https://www.instagram.com/sirius._.stellar/" target="_blank">Instagram</a>
+      </nav>
+    </div>
+    <div class="actions">
+      <button class="btn" id="sayHello">Say Hello</button>
+      <div class="hamb" id="hamb" aria-label="open menu">≡</div>
+    </div>
+  </header>
+
+  <div class="panel" id="panel" aria-hidden="true">
+    <h3>Menu</h3>
+    <a href="#schooling" class="goto">Schooling</a>
+    <a href="#college" class="goto">College</a>
+    <a href="#courses" class="goto">Courses</a>
+    <a href="#work" class="goto">My Work</a>
+    <a href="#experience" class="goto">Experience</a>
+    <a href="mailto:amlusanthoshi@gmail.com">Contact: amlusanthoshi@gmail.com</a>
+    <hr>
+    <h4>Quick Links</h4>
+    <a href="https://github.com/santhoshi31" target="_blank">GitHub Profile</a>
+    <a href="https://loan-approver-prediction.streamlit.app/" target="_blank">Loan Approver App</a>
+    <a href="https://wander-weaver.vercel.app/" target="_blank">Wander Weaver</a>
+  </div>
+
+  <main class="slide-container">
+    <section class="hero slide-in">
+      <div class="intro">
+        <small>Santhoshi — Data Science & AI Engineer</small>
+        <h1 class="title">Data Science & AI Engineer</h1>
+        <div class="underline" aria-hidden></div>
+        <p class="lead">Data science and AI engineer skilled in ML, DL, NLP and data analytics. Experienced in building predictive models, training pipelines and deploying AI-driven web applications. Strong in Python, problem-solving, and end-to-end model development.</p>
+
+        <div style="margin-top:28px;display:flex;gap:12px;align-items:center">
+          <button class="btn" id="myWork">My Work</button>
+          <a href="https://github.com/santhoshi31" class="btn" style="background:transparent;color:var(--deep);border:2px solid var(--deep);">GitHub</a>
+        </div>
+      </div>
+
+      <div class="photo">
+        <div class="profile">
+          <!-- Replace cv-pic.jpg with your photo file in the same folder -->
+          <img src="cv-pic.jpg" alt="Santhoshi">
+        </div>
+      </div>
+    </section>
+
+    <!-- Work section -->
+    <section id="work" class="section slide-in">
+      <h2>My Recent Work</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Vibe-Check</h4>
+          <p>It is a wonderful website to check your vibe with YouTube videos — paste a link and get a smart summary of the video. <strong>(Smart, fast, and fun)</strong></p>
+          <div class="links">
+            <a href="https://github.com/santhoshi31/Vibe-Check" target="_blank">View Repo</a>
+            <button class="like">❤️ Like <span class="count">0</span></button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Loan Approver Prediction</h4>
+          <p>This loan approver web app predicts whether your loan will be approved — enter details and get an instant decision. <strong>(Smart approvals, explainable)</strong></p>
+          <div class="links">
+            <a href="https://loan-approver-prediction.streamlit.app/" target="_blank">Open App</a>
+            <button class="like">❤️ Like <span class="count">0</span></button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>Wander Weaver</h4>
+          <p>Trip planner that generates personalized itineraries at your fingertips. <strong>(Personalized travel, instant plans)</strong></p>
+          <div class="links">
+            <a href="https://wander-weaver.vercel.app/" target="_blank">Open Site</a>
+            <button class="like">❤️ Like <span class="count">0</span></button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4>GitHub Profile</h4>
+          <p>Explore all my coding projects and repos on GitHub — complete code, readmes and live demos. <strong>(Source-first, reproducible)</strong></p>
+          <div class="links">
+            <a href="https://github.com/santhoshi31" target="_blank">View GitHub</a>
+            <button class="like">❤️ Like <span class="count">0</span></button>
+          </div>
+        </div>
+
+        <!-- Gym project placed after github profile -->
+        <div class="card">
+          <h4>Gym Business Prediction</h4>
+          <p>Data-driven analysis to identify the right customer segments and best city locations to launch a Gym business. <strong>(Insightful, strategic, business-focused)</strong></p>
+          <div class="links">
+            <a href="https://github.com/santhoshi31" target="_blank">View Repo</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="section slide-in">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <div class="job">
+          <h4>Azentio Software Pvt Ltd — Full Stack Developer</h4>
+          <small>Jan 4, 2023 — Nov 21, 2024</small>
+          <p style="margin-top:8px;color:var(--muted)">Built and optimized scalable Java Spring Boot applications and REST APIs, improving system performance with 30% faster load times and 50% quicker queries.</p>
+
+            <p style="margin-top:8px;color:var(--muted)">Led Agile modernization initiatives, migrating legacy systems to modern frameworks and microservices capable of handling 3× more traffic.</p>
+
+            <p style="margin-top:8px;color:var(--muted)">Strengthened reliability by integrating monitoring/logging, resolving production issues in under 24 hours, and cutting detection time by 20%.</p>
+
+            <p style="margin-top:8px;color:var(--muted)">Reduced costs and improved quality by driving containerization (40% savings), boosting test coverage to 90%, and minimizing regression defects by 50%.</p>
+        </div>
+
+        <div class="job">
+          <h4>HCL Tech — Software Engineer</h4>
+          <small>May 8, 2025 — Present</small>
+          <p style="margin-top:8px;color:var(--muted)">At HCL Tech, I built and optimized scalable Spring Boot applications, improving system load times by 30% and accelerating database performance by 50%.</p>
+          <p style="margin-top:8px;color:var(--muted)">I resolved production issues within 24 hours, led Agile migrations from legacy to modern frameworks, and implemented monitoring solutions that cut issue detection time by 20%.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schooling Page -->
+    <section id="schooling" class="section slide-in">
+      <h2>Schooling</h2>
+      <p>My schooling journey (2019) was filled with energy, leadership, and achievement. I was known as an <strong>active all‑rounder</strong>—excelling in academics, sports, and competitions. I proudly secured <strong>2nd place at the Zonal Level Championships</strong> and earned multiple <strong>school-level titles</strong>. <em>Passionate, competitive, and always ready to push beyond limits.</em></p>
+    </section>
+
+    <!-- College Page -->
+    <section id="college" class="section slide-in">
+      <h2>College — Bannari Amman Institute of Technology</h2>
+      <p>During my <strong>B.E ECE</strong> at BIT, I immersed myself in innovation and hands‑on engineering. My major project — <strong>Elephant Detector System</strong> — combined AI vision models and sensor integration to detect elephant movement in border regions, helping prevent both human and animal accidents. <em>AI for real-world impact.</em></p>
+      <p>This project, along with my strong academic performance, led to my <strong>campus placement at Azentio Software</strong>.</p>
+    </section>
+
+    <!-- Courses Page -->
+    <section id="courses" class="section slide-in">
+      <h2>Courses & Certifications</h2>
+      <p>I have completed several courses to advance my technical skills. Explore more on <a href="https://www.linkedin.com/in/santhoshi-senthilkumar3120022022" target="_blank">LinkedIn</a>.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h4>AI Tools Workshop</h4>
+          <img src="Certificate.jpg" alt="AI Tools Certificate" class="cert-img">
+        </div>
+
+        <div class="card">
+          <h4>JavaScript Certification</h4>
+          <img src="js-cert.jpg" alt="JavaScript Certificate" class="cert-img">
+        </div>
+
+        <div class="card">
+          <h4>Java Certification</h4>
+          <img src="java-cert.jpg" alt="Java Certificate" class="cert-img">
+        </div>
+
+        <div class="card">
+          <h4>Oracle SQL Certification</h4>
+          <img src="sql-cert.jpg" alt="SQL Certificate" class="cert-img">
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year">2025</span> Santhoshi — Data Science & AI Engineer • <a href="mailto:amlusanthoshi@gmail.com">amlusanthoshi@gmail.com</a>
+    </footer>
+
+  </main>
+
+  <script>
+    // safely set year - element exists in footer
+    const yearEl = document.getElementById('year');
+    if(yearEl) yearEl.textContent = new Date().getFullYear();
+
+    const panel = document.getElementById('panel');
+    const hamb = document.getElementById('hamb');
+    hamb.addEventListener('click',()=>{ panel.classList.toggle('open'); panel.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true')} );
+
+    // My Work button scrolls to work section with smooth slide animation
+    const myWorkBtn = document.getElementById('myWork');
+    if(myWorkBtn) myWorkBtn.addEventListener('click',()=>{
+      const target = document.querySelector('#work');
+      if(target) target.scrollIntoView({behavior:'smooth'});
+    });
+
+    // Say Hello opens mailto
+    const sayBtn = document.getElementById('sayHello');
+    if(sayBtn) sayBtn.addEventListener('click',()=>{
+      window.location.href='mailto:amlusanthoshi@gmail.com';
+    });
+
+    // like button counter
+    document.querySelectorAll('.like').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const span = btn.querySelector('.count');
+        if(span) span.textContent = parseInt(span.textContent) + 1;
+      })
+    });
+
+    // close panel when clicking navigation inside
+    document.querySelectorAll('.goto').forEach(a=>a.addEventListener('click',e=>{
+      e.preventDefault(); panel.classList.remove('open'); panel.setAttribute('aria-hidden','true');
+      const target = document.querySelector(a.getAttribute('href'));
+      if(target) target.scrollIntoView({behavior:'smooth'});
+    }));
+
+    // slide-in on scroll with stagger for cards
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('show');
+          // add delay for cards inside the same grid
+          if(e.target.classList.contains('grid')){
+            const children = Array.from(e.target.querySelectorAll('.card'));
+            children.forEach((c,i)=>setTimeout(()=>c.classList.add('show'), i*120));
+          }
+        }
+      })
+    },{threshold:0.18});
+
+    document.querySelectorAll('.slide-in, .grid').forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>
